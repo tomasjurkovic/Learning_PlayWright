@@ -1,4 +1,4 @@
-const {test} = require("@playwright/test");
+const {test, expect} = require("@playwright/test");
 
 test('Browser context declaration PlayWright test', async ({browser}) => {
     
@@ -16,10 +16,17 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
     }
 );
 
-test('Page PlayWright test', async ({page}) => {
+test.only('Page title PlayWright test', async ({page}) => {
     
     // navigate to specific page
-    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://www.google.com");
+
+    // check title
+    // get title
+    const pageTitle = "Google";
+
+    // put assertion
+    await expect(page).toHaveTitle(pageTitle);
 
     }
 );
