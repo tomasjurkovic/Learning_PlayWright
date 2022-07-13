@@ -20,6 +20,11 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
     // put assertion
     await expect(page).toHaveTitle(pageTitle);
 
+    // fill all fields on Login Page:
+    await page.locator("#username").type("rahulshetty");
+    await page.locator("[type='password']").type("Heslo123");
+    await page.locator("#SignInButton").click();
+    
     }
 );
 

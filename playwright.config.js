@@ -28,7 +28,8 @@ const config = {
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     // this is for chrome (safari uses webkit, firefox uses itself)
-    browserName : 'chromium'
+    browserName : 'webkit',
+    headless : false
 
   },
 
