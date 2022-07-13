@@ -23,8 +23,8 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
     // fill all fields on Login Page:
     await page.locator("#username").type("rahulshetty");
     await page.locator("[type='password']").type("Heslo123");
-    await page.locator("#SignInButton").click();
-    
+    await page.locator("#signInBtn").click();
+
     }
 );
 
