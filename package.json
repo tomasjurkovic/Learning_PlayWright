@@ -1,0 +1,21 @@
+{
+  "name": "learning_playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomasjurkovic/Learning_PlayWright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomasjurkovic/Learning_PlayWright/issues"
+  },
+  "homepage": "https://github.com/tomasjurkovic/Learning_PlayWright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.23.2"
+  }
+}
