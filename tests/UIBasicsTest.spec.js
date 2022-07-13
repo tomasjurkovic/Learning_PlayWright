@@ -13,17 +13,24 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
 
+    // check title
+    const pageTitle = "LoginPage Practise | Rahul Shetty Academy";
+    console.log(await page.title());
+
+    // put assertion
+    await expect(page).toHaveTitle(pageTitle);
+
     }
 );
 
-test.only('Page title PlayWright test', async ({page}) => {
+test('Page title PlayWright test', async ({page}) => {
     
     // navigate to specific page
     await page.goto("https://www.google.com");
 
     // check title
-    // get title
     const pageTitle = "Google";
+    console.log(await page.title());
 
     // put assertion
     await expect(page).toHaveTitle(pageTitle);
