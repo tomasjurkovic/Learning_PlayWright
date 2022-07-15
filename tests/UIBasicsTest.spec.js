@@ -22,10 +22,11 @@ test('RahulShetty login page title scenario', async ({browser}) => {
     }
 );
 
-test('RahulShetty login page in/correct login scenario', async ({page}) => {
+test.only('RahulShetty login page in/correct login scenario', async ({page}) => {
 
     const userNameLocator = page.locator("#username");
     const passwordLocator = page.locator("#password");
+    const signInLocator = page.locator("#signInBtn");
     
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
@@ -33,7 +34,7 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
     // fill all fields on Login Page:
     await userNameLocator.type("rahulshetty");
     await passwordLocator.type("learning");
-    await page.locator("#signInBtn").click();
+    await signInLocator.click();
     
     // check error message
     const errorMessageText = "Incorrect username/password.";
@@ -46,13 +47,20 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
     // fill all fields on Login Page:
     await userNameLocator.type("rahulshettyacademy");
     await passwordLocator.type("learning");
-    await page.locator("#signInBtn").click();
+    await signInLocator.click();
     
     // check- page's title and url
     const pageTitle = "ProtoCommerce";
     const urlLink = "https://rahulshettyacademy.com/angularpractice/shop";
     await expect(page).toHaveTitle(pageTitle);
     await expect(page).toHaveURL(urlLink);
+
+    const cardTitles = page.locator(".card-body a");
+
+    console.log(await cardTitles.first().textContent());
+    const allTitles = await cardTitles.allTextContents(); 
+    console.log(allTitles);
+
     }
 );
 
