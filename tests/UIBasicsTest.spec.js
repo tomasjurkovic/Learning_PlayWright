@@ -56,10 +56,13 @@ test.only('RahulShetty login page in/correct login scenario', async ({page}) => 
     await expect(page).toHaveURL(urlLink);
 
     const cardTitles = page.locator(".card-body a");
+    const titlesArray = [ 'iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry' ];
 
     console.log(await cardTitles.first().textContent());
     const allTitles = await cardTitles.allTextContents(); 
-    console.log(allTitles);
+
+    // check if card titles on page equals to those one in array
+    await expect(allTitles).toEqual(titlesArray);
 
     }
 );
