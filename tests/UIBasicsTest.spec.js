@@ -22,9 +22,13 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
 
     // fill all fields on Login Page:
     await page.locator("#username").type("rahulshetty");
-    await page.locator("[type='password']").type("Heslo123");
+    await page.locator("[type='password']").type("learning");
     await page.locator("#signInBtn").click();
-
+    
+    // check error message
+    const errorMessageText = "Incorrect username/password.";
+    await page.locator("[style*='block']").textContent();
+    await expect(page.locator("[style*='block']")).toContainText(errorMessageText);
     }
 );
 
