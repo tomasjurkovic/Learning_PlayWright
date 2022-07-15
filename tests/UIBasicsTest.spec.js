@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test('Browser context declaration PlayWright test', async ({browser}) => {
+test('RahulShetty login page title scenario', async ({browser}) => {
     
     // chrome - without plugins/cookie - everything is freshly open and possible to setup
 
@@ -19,6 +19,13 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
 
     // put assertion
     await expect(page).toHaveTitle(pageTitle);
+    }
+);
+
+test('RahulShetty login page incorrect login scenario', async ({page}) => {
+    
+    // navigate to specific page
+    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
 
     // fill all fields on Login Page:
     await page.locator("#username").type("rahulshetty");
@@ -32,7 +39,25 @@ test('Browser context declaration PlayWright test', async ({browser}) => {
     }
 );
 
-test('Page title PlayWright test', async ({page}) => {
+test('RahulShetty login page correct login scenario', async ({page}) => {
+    
+    // navigate to specific page
+    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
+
+    // fill all fields on Login Page:
+    await page.locator("#username").type("rahulshettyacademy");
+    await page.locator("[type='password']").type("learning");
+    await page.locator("#signInBtn").click();
+    
+    // check- page's title and url
+    const pageTitle = "ProtoCommerce";
+    const urlLink = "https://rahulshettyacademy.com/angularpractice/shop";
+    await expect(page).toHaveTitle(pageTitle);
+    await expect(page).toHaveURL(urlLink);
+    }
+);
+
+test('Google page title PlayWright test', async ({page}) => {
     
     // navigate to specific page
     await page.goto("https://www.google.com");
