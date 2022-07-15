@@ -22,31 +22,30 @@ test('RahulShetty login page title scenario', async ({browser}) => {
     }
 );
 
-test('RahulShetty login page incorrect login scenario', async ({page}) => {
+test('RahulShetty login page in/correct login scenario', async ({page}) => {
+
+    const userNameLocator = page.locator("#username");
+    const passwordLocator = page.locator("#password");
     
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
 
     // fill all fields on Login Page:
-    await page.locator("#username").type("rahulshetty");
-    await page.locator("[type='password']").type("learning");
+    await userNameLocator.type("rahulshetty");
+    await passwordLocator.type("learning");
     await page.locator("#signInBtn").click();
     
     // check error message
     const errorMessageText = "Incorrect username/password.";
     await page.locator("[style*='block']").textContent();
     await expect(page.locator("[style*='block']")).toContainText(errorMessageText);
-    }
-);
-
-test('RahulShetty login page correct login scenario', async ({page}) => {
     
-    // navigate to specific page
-    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
+    await userNameLocator.fill("");
+    await passwordLocator.fill("");
 
     // fill all fields on Login Page:
-    await page.locator("#username").type("rahulshettyacademy");
-    await page.locator("[type='password']").type("learning");
+    await userNameLocator.type("rahulshettyacademy");
+    await passwordLocator.type("learning");
     await page.locator("#signInBtn").click();
     
     // check- page's title and url
