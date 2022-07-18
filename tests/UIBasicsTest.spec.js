@@ -75,9 +75,14 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     const userEmailLocator = page.locator("#user_email");
     const passwordLocator = page.locator("#password");
     const singUpHeader = "Sign Up";
+    const user = "Tomas Jurkovic";
+    let random = (Math.random() + 1).toString(36).substring(7);
+    const mail = random + "tomas.jurkovic@rsa.com";
+    const password = "5tr0NgP@$$w()R|)";
     const signUpLocator = page.locator("div[class='login-btn'] a[class='theme-btn']");
     const singUpSecondLocator = page.locator("input[value='Sign up']");
     const urlLink = "https://courses.rahulshettyacademy.com/";
+    const cardTitle = "All-Access Membership";
     
     // navigate to specific page
     await page.goto("https://rahulshettyacademy.com/practice-project");
@@ -87,11 +92,18 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     // chech if user is redirected to correct website
     await expect(page.locator(".heading3")).toContainText(singUpHeader);
 
-    await userNameLocator.type("Tomas Jurkovic");
-    await userEmailLocator.type("tomas.jurkovic@rahulshettyacademy.com");
-    await passwordLocator.type("5tr0NgP@$$w()R|)");
+    await userNameLocator.type(user);
+    // mail must be uniqe...
+    await userEmailLocator.type(mail);
+    await passwordLocator.type(password);
 
     await singUpSecondLocator.click();
+
+    // check if coprrect user is logged in:
+    await expect(page.locator(".navbar-current-user")).toContainText(user);
+
+    // check first card's title:
+    await expect(page.locator("div[title='All-Access Membership']")).toContainText(cardTitle);
 
     // check page's url link
     await expect(page).toHaveURL(urlLink);
