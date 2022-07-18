@@ -69,7 +69,7 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
 
 
 
-test.only('RahulShetty login page correct register and login scenario', async ({page}) => {
+test.only('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
 
     const userNameLocator = page.locator("#user_name");
     const userEmailLocator = page.locator("#user_email");
@@ -108,6 +108,71 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     // check page's url link
     await expect(page).toHaveURL(urlLink);
 
+    }
+);
+
+test.only('RahulShetty login page correct register and login scenario', async ({page}) => {
+
+    const firstNameLocator = page.locator("#firstName");
+    const lastNameLocator = page.locator("#lastName");
+    const userMobileLocator = page.locator("#userMobile");
+    const userEmailLocator = page.locator("#userEmail");
+    const passwordLocator = page.locator("#userPassword");
+    const confirmPasswordLocator = page.locator("#confirmPassword");
+    const header = "Register";
+    const firstName = "Tomas";
+    const lastName = "Jurkovic";
+    const phone = "9909909909"
+    let random = (Math.random() + 1).toString(36).substring(7);
+    const mail = random + "tomas.jurkovic@rsa.com";
+    const password = "5tr0NgP@$$w()R|)";
+    const registerLocator = page.locator(".text-reset");
+    const registerSecondLocator = page.locator("#login");
+    const urlLink = "https://www.rahulshettyacademy.com/client/auth/register";
+    const urlLink2 = "https://www.rahulshettyacademy.com/client/auth/login";
+    const urlLink3 = "https://www.rahulshettyacademy.com/client/dashboard/dash";
+    const cardTitle = "ZARA COAT 3";
+    
+    // navigate to specific page
+    await page.goto("https://www.rahulshettyacademy.com/client/");
+
+    await registerLocator.click();
+
+    // check page's url link
+    await expect(page).toHaveURL(urlLink);
+
+    // chech if user is redirected to correct website
+    await expect(page.locator(".login-title")).toContainText(header);
+
+    await firstNameLocator.type(firstName);
+    await lastNameLocator.type(lastName);
+    await userEmailLocator.type(mail);
+    await userMobileLocator.type(phone);
+    await passwordLocator.type(password);
+    await confirmPasswordLocator.type(password);
+
+    // mark more than 18 years old checkbox:
+    await page.locator("input[type='checkbox']").check()
+
+    await registerSecondLocator.click();
+
+    // check if success message appears successfully:
+    await expect(page.locator(".headcolor")).toContainText("Account Created Successfully");
+
+    await page.locator(".btn-primary").click()
+
+    await userEmailLocator.type(mail);
+    await passwordLocator.type(password);
+
+    await expect(page).toHaveURL(urlLink2);
+
+    // click on login button
+    await page.locator("#login").click()
+
+    // check first card's title:
+    await expect(page.locator("h5").first()).toContainText(cardTitle);
+
+    await expect(page).toHaveURL(urlLink3);
     }
 );
 
