@@ -22,7 +22,7 @@ test('RahulShetty login page title scenario', async ({browser}) => {
     }
 );
 
-test.only('RahulShetty login page in/correct login scenario', async ({page}) => {
+test('RahulShetty login page in/correct login scenario', async ({page}) => {
 
     const userNameLocator = page.locator("#username");
     const passwordLocator = page.locator("#password");
@@ -63,6 +63,38 @@ test.only('RahulShetty login page in/correct login scenario', async ({page}) => 
 
     // check if card titles on page equals to those one in array
     await expect(allTitles).toEqual(titlesArray);
+
+    }
+);
+
+
+
+test.only('RahulShetty login page correct register and login scenario', async ({page}) => {
+
+    const userNameLocator = page.locator("#user_name");
+    const userEmailLocator = page.locator("#user_email");
+    const passwordLocator = page.locator("#password");
+    const singUpHeader = "Sign Up";
+    const signUpLocator = page.locator("div[class='login-btn'] a[class='theme-btn']");
+    const singUpSecondLocator = page.locator("input[value='Sign up']");
+    const urlLink = "https://courses.rahulshettyacademy.com/";
+    
+    // navigate to specific page
+    await page.goto("https://rahulshettyacademy.com/practice-project");
+
+    await signUpLocator.click();
+
+    // chech if user is redirected to correct website
+    await expect(page.locator(".heading3")).toContainText(singUpHeader);
+
+    await userNameLocator.type("Tomas Jurkovic");
+    await userEmailLocator.type("tomas.jurkovic@rahulshettyacademy.com");
+    await passwordLocator.type("5tr0NgP@$$w()R|)");
+
+    await singUpSecondLocator.click();
+
+    // check page's url link
+    await expect(page).toHaveURL(urlLink);
 
     }
 );
