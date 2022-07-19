@@ -205,19 +205,12 @@ test.only('UI Controls test', async ({page}) => {
     await userNameLocator.type("rahulshettyacademy");
     await passwordLocator.type("learning");
 
-    await page.pause();
-
-
     // select 'Consultant' option from dropdown
     await dropdownSelector.selectOption("consult");
 
     // it will let the window open for check 
-    await page.pause();
+    // await page.pause();
 
     await signInLocator.click();
-
-    await page.pause();
-
-
     }
 );
