@@ -198,6 +198,7 @@ test.only('UI Controls test', async ({page}) => {
     const signInLocator = page.locator("#signInBtn");
     const dropdownSelector = page.locator("select.form-control");
     const okayBtn = page.locator("#okayBtn");
+    const termsCheckbox = page.locator("#terms");
 
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
@@ -212,6 +213,9 @@ test.only('UI Controls test', async ({page}) => {
     // check if 'admin' option in radio button is selected by default:
     await expect(page.locator(".radiotextsty").nth(0)).toBeChecked();
 
+    // check that other option 'user' is not checked:
+    expect(await page.locator(".radiotextsty").nth(1).isChecked()).toEqual(false);
+
     // select 'User' from radio button:
     await page.locator(".radiotextsty").nth(1).click();
 
@@ -221,8 +225,23 @@ test.only('UI Controls test', async ({page}) => {
     // check if user is selected in radio button:
     await expect(page.locator(".radiotextsty").nth(1)).toBeChecked();
 
+    // check that admin is not checked anymore
+    expect(await page.locator(".radiotextsty").nth(0).isChecked()).toEqual(false);
+
+    // click agree with terms:
+    await termsCheckbox.click();
+
+    // assert if checkbox is checked:
+    expect(termsCheckbox).toBeChecked();
+
+    // uncheck it:
+    await termsCheckbox.uncheck();
+
     // it will let the window open for check 
     // await page.pause();
+
+    // check if checkbox is now not checked
+    expect(await page.locator("#terms").isChecked()).toBeFalsy();
 
     await signInLocator.click();
     }
