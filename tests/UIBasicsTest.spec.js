@@ -69,7 +69,7 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
 
 
 
-test('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
+test.only('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
 
     const userNameLocator = page.locator("#user_name");
     const userEmailLocator = page.locator("#user_email");
@@ -97,7 +97,13 @@ test('RahulShetty login page correct register scenario - diff. page', async ({pa
     await userEmailLocator.type(mail);
     await passwordLocator.type(password);
 
-    await singUpSecondLocator.click();
+    // navigation happens after the click, so this causes Playwright waits for it:
+    await Promise.all(
+        [
+            page.waitForNavigation(),
+            singUpSecondLocator.click(),        
+        ]
+    )
 
     // check if coprrect user is logged in:
     await expect(page.locator(".navbar-current-user")).toContainText(user);
@@ -111,7 +117,7 @@ test('RahulShetty login page correct register scenario - diff. page', async ({pa
     }
 );
 
-test.only('RahulShetty login page correct register and login scenario', async ({page}) => {
+test('RahulShetty login page correct register and login scenario', async ({page}) => {
 
     const firstNameLocator = page.locator("#firstName");
     const lastNameLocator = page.locator("#lastName");
