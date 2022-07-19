@@ -199,6 +199,7 @@ test.only('UI Controls test', async ({page}) => {
     const dropdownSelector = page.locator("select.form-control");
     const okayBtn = page.locator("#okayBtn");
     const termsCheckbox = page.locator("#terms");
+    const blinkTextLoc = page.locator("[href*='documents-request']");
 
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
@@ -242,6 +243,9 @@ test.only('UI Controls test', async ({page}) => {
 
     // check if checkbox is now not checked
     expect(await page.locator("#terms").isChecked()).toBeFalsy();
+
+    await expect(blinkTextLoc).toHaveAttribute('class', 'blinkingText');
+    await expect(page.locator('.blinkingText')).toHaveCSS('animation', '1s linear 0s infinite normal none running blink');
 
     await signInLocator.click();
     }
