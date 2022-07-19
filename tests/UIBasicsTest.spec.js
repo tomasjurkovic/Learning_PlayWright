@@ -69,7 +69,7 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
 
 
 
-test.only('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
+test('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
 
     const userNameLocator = page.locator("#user_name");
     const userEmailLocator = page.locator("#user_email");
@@ -128,18 +128,19 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     const password = "5tr0NgP@$$w()R|)";
     const registerLocator = page.locator(".text-reset");
     const registerSecondLocator = page.locator("#login");
-    const urlLink = "https://www.rahulshettyacademy.com/client/auth/register";
-    const urlLink2 = "https://www.rahulshettyacademy.com/client/auth/login";
-    const urlLink3 = "https://www.rahulshettyacademy.com/client/dashboard/dash";
-    const cardTitle = "ZARA COAT 3";
+    const mainPage = "https://www.rahulshettyacademy.com/client/";
+    const registerEndpoint = "auth/register";
+    const loginEndpoint = "auth/login";
+    const dashEndpoint = "dashboard/dash";
+    const title = "Let's Shop";
     
     // navigate to specific page
-    await page.goto("https://www.rahulshettyacademy.com/client/");
+    await page.goto(mainPage);
 
     await registerLocator.click();
 
     // check page's url link
-    await expect(page).toHaveURL(urlLink);
+    await expect(page).toHaveURL(mainPage + registerEndpoint);
 
     // chech if user is redirected to correct website
     await expect(page.locator(".login-title")).toContainText(header);
@@ -164,15 +165,17 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     await userEmailLocator.type(mail);
     await passwordLocator.type(password);
 
-    await expect(page).toHaveURL(urlLink2);
+    await expect(page).toHaveURL(mainPage + loginEndpoint);
 
     // click on login button
     await page.locator("#login").click()
 
+    await expect(page).toHaveTitle(title);
     // check first card's title:
-    await expect(page.locator("h5").first()).toContainText(cardTitle);
+    // console.log(await expect(page.locator("h5:nth-child(1) > b:nth-child(1)")).textContent());
+    //.toContainText(cardTitle);
 
-    await expect(page).toHaveURL(urlLink3);
+    await expect(page).toHaveURL(mainPage + dashEndpoint);
     }
 );
 
