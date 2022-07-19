@@ -197,7 +197,8 @@ test.only('UI Controls test', async ({page}) => {
     const passwordLocator = page.locator("#password");
     const signInLocator = page.locator("#signInBtn");
     const dropdownSelector = page.locator("select.form-control");
-    
+    const okayBtn = page.locator("#okayBtn");
+
     // navigate to specific page
     await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
 
@@ -205,8 +206,20 @@ test.only('UI Controls test', async ({page}) => {
     await userNameLocator.type("rahulshettyacademy");
     await passwordLocator.type("learning");
 
-    // select 'Consultant' option from dropdown
+    // select 'Consultant' option from dropdown:
     await dropdownSelector.selectOption("consult");
+
+    // check if 'admin' option in radio button is selected by default:
+    await expect(page.locator(".radiotextsty").nth(0)).toBeChecked();
+
+    // select 'User' from radio button:
+    await page.locator(".radiotextsty").nth(1).click();
+
+    // popup jumps out, so clicking on ok button
+    await okayBtn.click();
+
+    // check if user is selected in radio button:
+    await expect(page.locator(".radiotextsty").nth(1)).toBeChecked();
 
     // it will let the window open for check 
     // await page.pause();
