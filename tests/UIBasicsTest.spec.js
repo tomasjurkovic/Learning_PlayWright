@@ -69,7 +69,7 @@ test('RahulShetty login page in/correct login scenario', async ({page}) => {
 
 
 
-test.only('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
+test('RahulShetty login page correct register scenario - diff. page', async ({page}) => {
 
     const userNameLocator = page.locator("#user_name");
     const userEmailLocator = page.locator("#user_email");
@@ -191,17 +191,33 @@ test('RahulShetty login page correct register and login scenario', async ({page}
     }
 );
 
-test('Google page title PlayWright test', async ({page}) => {
+test.only('UI Controls test', async ({page}) => {
+    
+    const userNameLocator = page.locator("#username");
+    const passwordLocator = page.locator("#password");
+    const signInLocator = page.locator("#signInBtn");
+    const dropdownSelector = page.locator("select.form-control");
     
     // navigate to specific page
-    await page.goto("https://www.google.com");
+    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
 
-    // check title
-    const pageTitle = "Google";
-    console.log(await page.title());
+    // fill all fields on Login Page:
+    await userNameLocator.type("rahulshettyacademy");
+    await passwordLocator.type("learning");
 
-    // put assertion
-    await expect(page).toHaveTitle(pageTitle);
+    await page.pause();
+
+
+    // select 'Consultant' option from dropdown
+    await dropdownSelector.selectOption("consult");
+
+    // it will let the window open for check 
+    await page.pause();
+
+    await signInLocator.click();
+
+    await page.pause();
+
 
     }
 );
