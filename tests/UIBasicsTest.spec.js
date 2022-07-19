@@ -133,6 +133,7 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     const loginEndpoint = "auth/login";
     const dashEndpoint = "dashboard/dash";
     const title = "Let's Shop";
+    const titlesArray = ["zara coat 3", "adidas original", "iphone 13 pro"];
     
     // navigate to specific page
     await page.goto(mainPage);
@@ -170,12 +171,17 @@ test.only('RahulShetty login page correct register and login scenario', async ({
     // click on login button
     await page.locator("#login").click()
 
+    // load until data are loaded (card titles from API):
+    // "networkidle" - when all API calls are successfully completed:
+    await page.waitForLoadState('networkidle');
+    
     await expect(page).toHaveTitle(title);
-    // check first card's title:
-    // console.log(await expect(page.locator("h5:nth-child(1) > b:nth-child(1)")).textContent());
-    //.toContainText(cardTitle);
 
     await expect(page).toHaveURL(mainPage + dashEndpoint);
+
+    // check text titles:
+    const cardTitles = await page.locator(".card-body b").allTextContents();
+    expect(cardTitles).toEqual(titlesArray);
     }
 );
 
