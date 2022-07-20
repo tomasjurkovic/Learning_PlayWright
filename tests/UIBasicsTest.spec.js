@@ -191,7 +191,7 @@ test('RahulShetty login page correct register and login scenario', async ({page}
     }
 );
 
-test.only('UI Controls test', async ({page}) => {
+test('UI Controls test', async ({page}) => {
     
     const userNameLocator = page.locator("#username");
     const passwordLocator = page.locator("#password");
@@ -248,5 +248,36 @@ test.only('UI Controls test', async ({page}) => {
     await expect(page.locator('.blinkingText')).toHaveCSS('animation', '1s linear 0s infinite normal none running blink');
 
     await signInLocator.click();
+    }
+);
+
+test.only('Child windows handle test', async ({browser}) => {
+
+    // firstly we have to start from new browser and then open new page if we want to test child windows:
+    // new browser instance opens
+    const context = await browser.newContext();
+
+    // new page opens in browser
+    const page = await context.newPage();
+
+    const blinkTextLoc = page.locator("[href*='documents-request']");
+    const textOnNewPage = "Please email us at mentor@rahulshettyacademy.com with below template to receive response ";
+
+    // navigate to specific page
+    await page.goto("https://www.rahulshettyacademy.com/loginpagePractise/");
+
+    // wait for event of opening new page:
+    // new page will be open after clicking on that link, so we have to wait for it:
+    // newPage must be in brackets
+    const [newPage] = await Promise.all([
+        context.waitForEvent('page'),
+        await blinkTextLoc.click(),
+        ]
+    )
+
+    // example of assertion on new page that opens during test case:
+    const textFromNewPage = await newPage.locator(".red").textContent();
+    expect(textFromNewPage).toEqual(textOnNewPage);
+
     }
 );
