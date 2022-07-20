@@ -269,6 +269,8 @@ test.only('Child windows handle test', async ({browser}) => {
     // wait for event of opening new page:
     // new page will be open after clicking on that link, so we have to wait for it:
     // newPage must be in brackets
+    // if multiple pages are going to be open during one test, use this:
+    // const [newPage, newPage2] = await Promise.all([ ... and so on
     const [newPage] = await Promise.all([
         context.waitForEvent('page'),
         await blinkTextLoc.click(),
@@ -279,5 +281,28 @@ test.only('Child windows handle test', async ({browser}) => {
     const textFromNewPage = await newPage.locator(".red").textContent();
     expect(textFromNewPage).toEqual(textOnNewPage);
 
+    // extract username from the whole text:
+    const arrayText = textFromNewPage.split('@');
+    const domain = arrayText[1].split(" ")[0];
+    console.log(domain);
+
+    // use this email to login on previous page:
+    const userNameLocator = page.locator("#username");
+    const passwordLocator = page.locator("#password");
+    const signInLocator = page.locator("#signInBtn");
+
+    // fill all fields on Login Page:
+    await userNameLocator.type(domain);
+    await passwordLocator.type("learning");
+    await signInLocator.click();
+
+    // // check page's title and url
+    const pageTitle = "LoginPage Practise | Rahul Shetty Academy";
+    const urlLink = "https://rahulshettyacademy.com/loginpagePractise/";
+
+    // the credentials are wrong so we stays on the same page, 
+    // it is just a example of moving from one page to another (not correct login test)
+    await expect(page).toHaveTitle(pageTitle);
+    await expect(page).toHaveURL(urlLink);
     }
 );
