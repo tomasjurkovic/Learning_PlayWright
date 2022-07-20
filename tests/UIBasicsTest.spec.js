@@ -298,11 +298,9 @@ test.only('Child windows handle test', async ({browser}) => {
 
     // // check page's title and url
     const pageTitle = "LoginPage Practise | Rahul Shetty Academy";
-    const urlLink = "https://rahulshettyacademy.com/loginpagePractise/";
 
     // the credentials are wrong so we stays on the same page, 
     // it is just a example of moving from one page to another (not correct login test)
     await expect(page).toHaveTitle(pageTitle);
-    await expect(page).toHaveURL(urlLink);
     }
 );
