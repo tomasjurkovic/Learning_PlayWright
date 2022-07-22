@@ -127,9 +127,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const appliedCouponInfo = page.locator("p[class$='mt-1 ng-star-inserted']");
 
     // check if quantity is 1, price and selected product is correct:
-    console.log('This is from const:' + product.toLowerCase());
-    console.log(emailSelector.textContent());
-
     await productOrderSelector.textContent();
     expect(await productOrderSelector.textContent()).toEqual(product.toLowerCase());
     expect(await priceOrderSelector.textContent()).toEqual(' ' + price + ' ');
@@ -150,6 +147,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     expect(await appliedCouponInfo.textContent()).toEqual("* Coupon Applied");
 
     // click on 'Place Order' button:
-    await placeOrderButton.dblclick({ force: true }); // 
+    await placeOrderButton.dblclick({ force: true }); 
     }
 );
