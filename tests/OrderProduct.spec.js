@@ -111,5 +111,45 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     // click on buy now button
     await buyButton.click();
 
+    const priceOrderSelector = page.locator("div[class$='item__price']");
+    const productOrderSelector = page.locator("div[class='item__description'] li");
+    const emailSelector = page.locator(".details__user label");
+    const countrySelector = page.locator(".details__user input:last-child");
+    const country = "India";
+    const cardNumberSelector = page.locator(".form__cc > .row:first-child input[type$='text']");
+    const cardNumberInserted = "4542 9931 9292 2293";
+    const quantitySelector = page.locator(".item__quantity");
+    const quantityOne = " Quantity: 1 "
+    const couponInput = page.locator("input[name='coupon']");
+    const coupon = 'rahulshettyacademy';
+    const applyCouponButton = page.locator("button[type$='submit']");
+    const placeOrderButton = page.locator(".actions a[class$='btnn action__submit ng-star-inserted']"); // get better locator
+    const appliedCouponInfo = page.locator("p[class$='mt-1 ng-star-inserted']");
+
+    // check if quantity is 1, price and selected product is correct:
+    console.log('This is from const:' + product.toLowerCase());
+    console.log(emailSelector.textContent());
+
+    await productOrderSelector.textContent();
+    expect(await productOrderSelector.textContent()).toEqual(product.toLowerCase());
+    expect(await priceOrderSelector.textContent()).toEqual(' ' + price + ' ');
+    expect(await quantitySelector.textContent()).toEqual(quantityOne);
+    expect(await cardNumberSelector).toHaveAttribute('value', cardNumberInserted);
+    expect(await emailSelector.textContent()).toEqual(mail);
+
+    // insert coupon (rahulshettyacademy):
+    await couponInput.type(coupon);
+
+    // Select country (India):
+    await countrySelector.type(country);
+
+    // apply coupon:
+    await applyCouponButton.dblclick();
+
+    // check if message appears
+    expect(await appliedCouponInfo.textContent()).toEqual("* Coupon Applied");
+
+    // click on 'Place Order' button:
+    await placeOrderButton.dblclick({ force: true }); // 
     }
 );
