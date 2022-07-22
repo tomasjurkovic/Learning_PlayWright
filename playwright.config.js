@@ -29,8 +29,9 @@ const config = {
   use: {
     // this is for chrome (safari uses webkit, firefox uses itself)
     browserName : 'webkit',
-    headless : false
-
+    headless : false,
+    screenshot : 'on',
+    trace : 'on', 
   },
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
