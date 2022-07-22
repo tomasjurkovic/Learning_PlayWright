@@ -31,7 +31,7 @@ const config = {
     browserName : 'webkit',
     headless : false,
     screenshot : 'on',
-    trace : 'on', 
+    trace : 'retain-on-failure', // on, off
   },
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
