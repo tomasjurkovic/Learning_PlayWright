@@ -21,6 +21,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const registerEndpoint = "auth/register";
     const loginEndpoint = "auth/login";
     const dashEndpoint = "dashboard/dash";
+    const cartEndpoint = "dashboard/cart";
     const title = "Let's Shop";
     const titlesArray = ["zara coat 3", "adidas original", "iphone 13 pro"];
     
@@ -89,6 +90,12 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
     // check if no product is in Cart yet
     await expect(numberOfItems).toHaveText('1');
+
+    // click on 'Cart' button
+    await cardButton.click();
+
+    // verify if user is redirected to correct URL:
+    await expect(page).toHaveURL(mainPage + cartEndpoint);
 
 
     }
