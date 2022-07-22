@@ -251,7 +251,7 @@ test('UI Controls test', async ({page}) => {
     }
 );
 
-test.only('Child windows handle test', async ({browser}) => {
+test('Child windows handle test', async ({browser}) => {
 
     // firstly we have to start from new browser and then open new page if we want to test child windows:
     // new browser instance opens
