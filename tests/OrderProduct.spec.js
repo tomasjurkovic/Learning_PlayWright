@@ -23,7 +23,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const dashEndpoint = "dashboard/dash";
     const cartEndpoint = "dashboard/cart";
     const title = "Let's Shop";
-    const titlesArray = ["zara coat 3", "adidas original", "iphone 13 pro"];
     
     // navigate to specific page
     await page.goto(mainPage);
@@ -78,9 +77,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const cardButton = await page.locator(".btn[routerlink='/dashboard/cart']");
     const numberOfItems = await cardButton.locator('label');
 
-    console.log(product);
-    console.log(price);
-
     // check if no product is in Cart yet
     await expect(cardButton).toHaveText('Cart ');
     await expect(numberOfItems).toHaveText('');
@@ -97,6 +93,23 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     // verify if user is redirected to correct URL:
     await expect(page).toHaveURL(mainPage + cartEndpoint);
 
+    // get item number:
+    const itemNumber = await page.locator("div[class='cartSection'] .itemNumber").textContent();
+
+    const priceInCart = page.locator("div[class='prodTotal cartSection'] p");
+    const productInCart = page.locator("div[class='cartSection'] h3");
+    const subtotal = page.locator(".totalRow:first-child span[class$='value']");
+    const total = page.locator(".totalRow:nth-child(2) span[class$='value']");
+    const buyButton = page.locator("div[class='cartSection removeWrap'] button[class='btn btn-primary']");
+
+    // check if prices and product name are correct
+    expect(await priceInCart.textContent()).toEqual(price);
+    expect(await productInCart.textContent()).toEqual(product);
+    expect(await subtotal.textContent()).toEqual(price.split(" ").join(""));
+    expect(await total.textContent()).toEqual(price.split(" ").join(""));
+
+    // click on buy now button
+    await buyButton.click();
 
     }
 );
