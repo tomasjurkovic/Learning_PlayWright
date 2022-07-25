@@ -124,7 +124,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const couponInput = page.locator("input[name='coupon']");
     const coupon = 'rahulshettyacademy';
     const applyCouponButton = page.locator("button[type$='submit']");
-    const placeOrderButton = page.locator('text=Place Order');
+    const placeOrderButton = page.locator("a[class$='action__submit ng-star-inserted']");
     const appliedCouponInfo = page.locator("p[class$='mt-1 ng-star-inserted']");
 
     // check if quantity is 1, price and selected product is correct:
@@ -150,15 +150,16 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     expect(await appliedCouponInfo.textContent()).toEqual("* Coupon Applied");
 
     // click on 'Place Order' button:
-    await placeOrderButton.dblclick({ force: true }); 
+    await placeOrderButton.click();
+    await placeOrderButton.click();
 
     await page.pause();
 
     // locators on thank you page:
     const thankYouMessage = page.locator(".hero-primary").textContent();
     const orderId = page.locator("label[class='ng-star-inserted']").textContent();
-    const priceTH = page.locator("td[class='line-item product-info-column m-3'] div[class='title']").textContent();
-    const productTH = page.locator("td[class='line-item product-info-column'] div[class='title']").textContent();
+    const priceTH = page.locator("td[class='line-item product-info-column'] div[class='title']").textContent();
+    const productTH = page.locator("td[class='line-item product-info-column m-3'] div[class='title']").textContent();
     const quantityTH = page.locator("td[class='line-item product-info-column m-3'] div[class='sub']").textContent();
     const orderHistoryLink = page.locator("label[routerlink='/dashboard/myorders']");
 
