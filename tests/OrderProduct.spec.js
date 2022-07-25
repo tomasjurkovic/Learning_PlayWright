@@ -123,7 +123,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const couponInput = page.locator("input[name='coupon']");
     const coupon = 'rahulshettyacademy';
     const applyCouponButton = page.locator("button[type$='submit']");
-    const placeOrderButton = page.locator(".actions a[class$='btnn action__submit ng-star-inserted']"); // get better locator
+    const placeOrderButton = page.locator('text=Place Order');
     const appliedCouponInfo = page.locator("p[class$='mt-1 ng-star-inserted']");
 
     // check if quantity is 1, price and selected product is correct:
@@ -138,7 +138,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     await couponInput.type(coupon);
 
     // Select country (India):
-    await countrySelector.type(country);
+    await countrySelector.selectOption(country);
 
     // apply coupon:
     await applyCouponButton.dblclick();
@@ -148,5 +148,39 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
     // click on 'Place Order' button:
     await placeOrderButton.dblclick({ force: true }); 
+
+    // locators on thank you page:
+    const thankYouMessage = page.locator(".hero-primary").textContent();
+    const orderId = page.locator("label[class='ng-star-inserted']").textContent();
+    const priceTH = page.locator("td[class='line-item product-info-column m-3'] div[class='title']").textContent();
+    const productTH = page.locator("td[class='line-item product-info-column'] div[class='title']").textContent();
+    const quantityTH = page.locator("td[class='line-item product-info-column m-3'] div[class='sub']").textContent();
+    const orderHistoryLink = page.locator("label[routerlink='/dashboard/myorders']");
+
+    await console.log(thankYouMessage);
+    await console.log(priceTH);
+    await console.log(productTH);
+    await console.log(quantityTH);
+    await console.log(orderId);
+
+    await page.pause();
+
+    // check if correct message appears
+    expect(await thankYouMessage).toEqual(" Thankyou for the order. ");
+
+    // check if quantity is correct
+    expect(await quantityTH).toEqual("Qty: 1");
+
+    // check if price is correct
+    expect(await priceTH).toEqual(price);
+
+    // check if product name is correct
+    expect(await productTH).toEqual(product);
+
+    // check if order number is correct
+
+    // click on 'Order History' link:
+    await orderHistoryLink.click();
+
     }
 );
