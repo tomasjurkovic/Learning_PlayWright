@@ -114,8 +114,9 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const priceOrderSelector = page.locator("div[class$='item__price']");
     const productOrderSelector = page.locator("div[class='item__description'] li");
     const emailSelector = page.locator(".details__user label");
-    const countrySelector = page.locator(".details__user input:last-child");
-    const country = "India";
+    const countrySelector = page.locator("input[placeholder='Select Country']");
+    const countryDropdownJapan = page.locator('button:has-text("Japan")');
+    const country = "Japa";
     const cardNumberSelector = page.locator(".form__cc > .row:first-child input[type$='text']");
     const cardNumberInserted = "4542 9931 9292 2293";
     const quantitySelector = page.locator(".item__quantity");
@@ -137,8 +138,10 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     // insert coupon (rahulshettyacademy):
     await couponInput.type(coupon);
 
-    // Select country (India):
-    await countrySelector.selectOption(country);
+    // Select country (Japan):
+    await countrySelector.type(country);
+
+    await countryDropdownJapan.click();
 
     // apply coupon:
     await applyCouponButton.dblclick();
@@ -148,6 +151,8 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
     // click on 'Place Order' button:
     await placeOrderButton.dblclick({ force: true }); 
+
+    await page.pause();
 
     // locators on thank you page:
     const thankYouMessage = page.locator(".hero-primary").textContent();
@@ -162,8 +167,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     await console.log(productTH);
     await console.log(quantityTH);
     await console.log(orderId);
-
-    await page.pause();
 
     // check if correct message appears
     expect(await thankYouMessage).toEqual(" Thankyou for the order. ");
