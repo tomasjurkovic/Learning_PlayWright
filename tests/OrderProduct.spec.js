@@ -151,9 +151,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
     // click on 'Place Order' button:
     await placeOrderButton.click();
-    await placeOrderButton.click();
-
-    await page.pause();
 
     // locators on thank you page:
     const thankYouMessage = page.locator(".hero-primary").textContent();
@@ -163,12 +160,6 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const quantityTH = page.locator("td[class='line-item product-info-column m-3'] div[class='sub']").textContent();
     const orderHistoryLink = page.locator("label[routerlink='/dashboard/myorders']");
 
-    await console.log(thankYouMessage);
-    await console.log(priceTH);
-    await console.log(productTH);
-    await console.log(quantityTH);
-    await console.log(orderId);
-
     // check if correct message appears
     expect(await thankYouMessage).toEqual(" Thankyou for the order. ");
 
@@ -176,12 +167,13 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     expect(await quantityTH).toEqual("Qty: 1");
 
     // check if price is correct
-    expect(await priceTH).toEqual(price);
+    expect(await priceTH).toEqual(price + " ");
 
     // check if product name is correct
     expect(await productTH).toEqual(product);
 
     // check if order number is correct
+    // TODO: 
 
     // click on 'Order History' link:
     await orderHistoryLink.click();
