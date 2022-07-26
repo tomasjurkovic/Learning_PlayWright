@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test.only('RahulShetty eshop order product end to end test', async ({page}) => {
+test('RahulShetty eshop order product end to end test', async ({page}) => {
 
     const firstNameLocator = page.locator("#firstName");
     const lastNameLocator = page.locator("#lastName");
