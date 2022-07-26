@@ -69,34 +69,19 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     await expect(page).toHaveURL(mainPage + dashEndpoint);
 
     // check text titles:
-    const productName = 'Zara Coat 3';
-    const products = await page.locator(".card-body b");
+    const productName = 'zara coat 3';
+    const products = await page.locator(".card-body");
     const titles = await page.locator(".card-body b").allTextContents();
 
     // dynamically select specified product
-    const count = products.count();
+    const count = await products.count();
     for(let i = 0; i < count; ++i) {
-        if (await products.nth(i).locator('b').textContent() === productName) {
+        if (await products.nth(i).locator("b").textContent() === productName) {
             // add product to cart (click on add to cart button)
             products.nth(i).locator("text= Add To Cart").click();
             break;
+            }
         }
-    }
-
-    await page.pause();
-
-    // const product = await page.locator(".card-body b").nth(1).textContent();
-    // const price = await page.locator(".card-body").nth(1).locator('.text-muted').textContent();
-    // const addToCard = await page.locator(".card-body").nth(1).locator(".btn.w-10");
-    // const cardButton = await page.locator(".btn[routerlink='/dashboard/cart']");
-    // const numberOfItems = await cardButton.locator('label');
-
-    // // check if no product is in Cart yet
-    // await expect(cardButton).toHaveText('Cart ');
-    // await expect(numberOfItems).toHaveText('');
-
-    // // add selected product to cart:
-    // await addToCard.click()
-
+   
     }
 );
