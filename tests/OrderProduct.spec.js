@@ -174,9 +174,51 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
     // check if order number is correct
     // TODO: 
+    // console.log(orderId);
+    // const urobTo = await orderId.toString();
+    // console.log(urobTo);
+    // const urobToZas = orderId.split("");
+
+    // console.log(urobToZas);
+    // const myArray = await orderId.split(" ");
+    // let ID = await myArray[1];
+    // console.log(ID);
+
 
     // click on 'Order History' link:
     await orderHistoryLink.click();
 
+    // check if correct URL is displayed
+    const myOrdersEndpoint = "dashboard/myorders";
+    const viewButton = page.locator("tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(6) button");
+    const orderNumber = await page.locator("tbody:nth-child(2) > tr:nth-child(1) > th:nth-child(1)").textContent();
+    const orderDetailEndpoint = "dashboard/order-details/" + orderNumber;
+
+    // check if correct page opens:
+    await expect(page).toHaveURL(mainPage + myOrdersEndpoint);
+
+    console.log(orderNumber);
+
+    await viewButton.click();
+
+    const orderNo = page.locator(".col-text.-main").textContent();
+    // const emailOrder1 = page.locator("div:nth-child(1) > div:nth-child(1) > p:nth-child(2)").textContent();
+    // const countryOrder1 = page.locator("div:nth-child(1) > div:nth-child(1) > p:nth-child(2)").textContent();
+    // const emailOrder2 = page.locator("div:nth-child(2) > div:nth-child(1) > p:nth-child(2)").textContent();
+    // const countryOrder2 = page.locator("div:nth-child(2) > div:nth-child(1) > p:nth-child(2)").textContent();
+    const productOrder = page.locator(".title").textContent();
+    const priceOrder = page.locator(".price").textContent();
+
+    // check if user is redirected to correct page:
+    await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
+
+    // check if order's detail data are correct:
+    expect(await orderNo).toEqual(orderNumber);
+    // expect(await emailOrder1).toEqual(emailSelector);
+    // expect(await emailOrder2).toEqual(emailSelector);
+    // expect(await countryOrder1).toEqual(" Country - Japan ");
+    // expect(await countryOrder2).toEqual(" Country - Japan ");
+    expect(await productOrder).toEqual(" " + product + " ");
+    expect(await priceOrder).toEqual(" " + price + " ");
     }
 );
