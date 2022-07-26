@@ -79,6 +79,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
         if (await products.nth(i).locator('b').textContent() === productName) {
             // add product to cart (click on add to cart button)
             products.nth(i).locator("text= Add To Cart");
+            break;
         }
     }
 
