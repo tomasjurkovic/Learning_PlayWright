@@ -74,6 +74,8 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const titles = await page.locator(".card-body b").allTextContents();
     const cartButton = page.locator("[routerlink*='cart']");
     const numberOfItems = cartButton.locator('label');
+    const checkoutButton = page.locator("text=Checkout");
+    const countrySelector = page.locator("[placeholder*='Country']");
 
     // dynamically select specified product
     const count = await products.count();
@@ -99,6 +101,27 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
         // this will find only for elements which has h3 tag:
         const addedProduct = await page.locator("h3:has-text('"+productName+"')").isVisible();
         expect(addedProduct).toBeTruthy();    
-   
+
+        // click on checkout button to move to payment method
+        checkoutButton.click();
+
+        // select correct country (f.e. India):
+        // use slow typing to open dropdown:
+        await countrySelector.type("ind", {delay:100});
+
+        // wait for suggestions show up:
+        const dropdown = page.locator('.ta-results');
+        await dropdown.waitFor();
+
+        // Select India from these suggestions:
+        const optionsCount = dropdown.locator('button').count();
+
+        for (let i = 0; i < optionsCount; i++) {
+            const text = await dropdown.locator('button').nth(i).textContent();
+            if (text === " India") {
+                await dropdown.locator('button').nth(i).click();
+                break;
+            }
+        }   
     }
 );
