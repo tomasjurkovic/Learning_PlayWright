@@ -107,18 +107,20 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
         // select correct country (f.e. India):
         // use slow typing to open dropdown:
-        await countrySelector.type("Japa", {delay:100});
-        const countryDropdownJapan = page.locator('button:has-text("Japan")');
+        await countrySelector.type("India", {delay:100});
+        const countryDropdownIndia = page.locator(".ta-results button:last-child");
 
         // wait for suggestions show up:
         const dropdown = page.locator('.ta-results');
         await dropdown.waitFor();
 
         // Select India from these suggestions:      
-        await countryDropdownJapan.click();
+        await countryDropdownIndia.click();
      
+        // check if mail is correctly inserted:
         await expect(page.locator(".user__name label")).toHaveText(mail);
 
+        // click on submit button
         await page.locator(".action__submit").click();
 
     }
