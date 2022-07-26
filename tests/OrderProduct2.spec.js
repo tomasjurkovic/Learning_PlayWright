@@ -123,5 +123,12 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
         // click on submit button
         await page.locator(".action__submit").click();
 
+        const thankYouMessage = page.locator(".hero-primary");
+        await expect(thankYouMessage).toHaveText(" Thankyou for the order. ");
+
+        const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+        const orderIdSliced = orderId.slice(3, -3);
+
+        await page.pause();
     }
 );
