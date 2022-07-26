@@ -72,6 +72,8 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const productName = 'zara coat 3';
     const products = await page.locator(".card-body");
     const titles = await page.locator(".card-body b").allTextContents();
+    const cartButton = page.locator("[routerlink*='cart']");
+    const numberOfItems = cartButton.locator('label');
 
     // dynamically select specified product
     const count = await products.count();
@@ -82,6 +84,21 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
             break;
             }
         }
+        
+        // check if no product is in Cart yet
+        await expect(numberOfItems).toHaveText('1');
+
+        // go to cart page:
+        await cartButton.click();
+
+        // wait for it loads (first list item):
+        await page.locator("div li").first().waitFor();
+
+        // check if currently selected product is located in cart:
+
+        // this will find only for elements which has h3 tag:
+        const addedProduct = await page.locator("h3:has-text('"+productName+"')").isVisible();
+        expect(addedProduct).toBeTruthy();    
    
     }
 );
