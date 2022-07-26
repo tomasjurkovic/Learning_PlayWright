@@ -74,27 +74,29 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const titles = await page.locator(".card-body b").allTextContents();
 
     // dynamically select specified product
-    const count = product.count();
+    const count = products.count();
     for(let i = 0; i < count; ++i) {
         if (await products.nth(i).locator('b').textContent() === productName) {
             // add product to cart (click on add to cart button)
-            products.nth(i).locator("text= Add To Cart");
+            products.nth(i).locator("text= Add To Cart").click();
             break;
         }
     }
 
-    const product = await page.locator(".card-body b").nth(1).textContent();
-    const price = await page.locator(".card-body").nth(1).locator('.text-muted').textContent();
-    const addToCard = await page.locator(".card-body").nth(1).locator(".btn.w-10");
-    const cardButton = await page.locator(".btn[routerlink='/dashboard/cart']");
-    const numberOfItems = await cardButton.locator('label');
+    await page.pause();
 
-    // check if no product is in Cart yet
-    await expect(cardButton).toHaveText('Cart ');
-    await expect(numberOfItems).toHaveText('');
+    // const product = await page.locator(".card-body b").nth(1).textContent();
+    // const price = await page.locator(".card-body").nth(1).locator('.text-muted').textContent();
+    // const addToCard = await page.locator(".card-body").nth(1).locator(".btn.w-10");
+    // const cardButton = await page.locator(".btn[routerlink='/dashboard/cart']");
+    // const numberOfItems = await cardButton.locator('label');
 
-    // add selected product to cart:
-    await addToCard.click()
+    // // check if no product is in Cart yet
+    // await expect(cardButton).toHaveText('Cart ');
+    // await expect(numberOfItems).toHaveText('');
+
+    // // add selected product to cart:
+    // await addToCard.click()
 
     }
 );
