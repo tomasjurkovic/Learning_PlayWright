@@ -75,7 +75,7 @@ test('Popup validation test', async ({page}) => {
     }
 );
 
-test.only('Hover validation test', async ({page}) => {
+test('Hover validation test', async ({page}) => {
 
     // navigate to main page:
     await page.goto(baseUrl);
@@ -96,6 +96,30 @@ test.only('Hover validation test', async ({page}) => {
 
     // check if URL changed
     expect(page).toHaveURL(baseUrl + topEndpoint);
+    }
+);
 
+test.only('Multiple frames validation test', async ({page}) => {
+    // this is needed only when multiple frames are on page 
+
+    // navigate to main page:
+    await page.goto(baseUrl);
+
+    // it needs to be scroll down:
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    // firstly it needs to be framesPage created and stored to variable like this:
+    const framesPage = page.frameLocator("#courses-iframe");
+
+    // parse some text and check if it is correct:
+    const textCheck = await framesPage.locator("div[class='container-fluid'] h2 span:nth-child(1)").textContent();
+    const secondWord = textCheck.split(" ")[1];
+    expect(secondWord).toEqual('Academy');
+
+    // expect(await textCheck.split(" ")[3]).toEqual("Learn");
+
+    // this will click on element which is located in the another frame on the website
+    // I used :visible because of there are two elements, but only on is visible
+    await framesPage.locator("li a[href*='lifetime-access']:visible").click();
     }
 );
