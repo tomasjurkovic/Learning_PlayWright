@@ -96,27 +96,23 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     // click on order history page
     await page.locator('text=Orders History Page').click();
 
+    // check url
     await expect(page).toHaveURL(mainPage + historyEndpoint);
 
-    await page.pause();
-
-    const tbRow = page.locator("tbody tr");
-    const rowCount = await tbRow.count();
-    console.log(rowCount);
+    const tbRows = page.locator("tbody tr");
     
     // click on correct order (actual one)
-    for (let i = 0; i < rowCount.length; i++) {
-        if (await tbRow.nth(i).locator("td").textContent() === orderIdSliced) 
+    for (let i = 1; i <= await tbRows.count(); i++) {
+        if (await page.locator("tbody tr:nth-child("+i+") th").textContent() === orderIdSliced) 
         {
-            await tbRow.nth(i).locator("td text=View").click();
+            await page.locator("tbody tr:nth-child("+i+") td .btn-primary").click();
             break;
         }
     }
 
-    await page.pause();
     // check if correct URL is displayed (for correct orderId)
-    // const orderDetailEndpoint = "dashboard/order-detail/" + orderId;
-    // await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
+    const orderDetailEndpoint = "dashboard/order-detail/" + orderId;
+    await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
 
 
     }
