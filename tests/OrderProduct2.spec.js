@@ -2,55 +2,18 @@ const {test, expect} = require("@playwright/test");
 
 test.only('RahulShetty eshop order product end to end test', async ({page}) => {
 
-    const firstNameLocator = page.locator("#firstName");
-    const lastNameLocator = page.locator("#lastName");
-    const userMobileLocator = page.locator("#userMobile");
+    const mail = "tomastest@test.org";
+    const password = "Test1234";
     const userEmailLocator = page.locator("#userEmail");
     const passwordLocator = page.locator("#userPassword");
-    const confirmPasswordLocator = page.locator("#confirmPassword");
-    const header = "Register";
-    const firstName = "Tomas";
-    const lastName = "Jurkovic";
-    const phone = "9909909909"
-    let random = (Math.random() + 1).toString(36).substring(7);
-    const mail = random + "tomas.jurkovic@rsa.com";
-    const password = "5tr0NgP@$$w()R|)";
-    const registerLocator = page.locator(".text-reset");
-    const registerSecondLocator = page.locator("#login");
+    const loginLocator = page.locator("#login");
     const mainPage = "https://www.rahulshettyacademy.com/client/";
-    const registerEndpoint = "auth/register";
     const loginEndpoint = "auth/login";
     const dashEndpoint = "dashboard/dash";
-    const cartEndpoint = "dashboard/cart";
     const title = "Let's Shop";
     
     // navigate to specific page
     await page.goto(mainPage);
-
-    await registerLocator.click();
-
-    // check page's url link
-    await expect(page).toHaveURL(mainPage + registerEndpoint);
-
-    // chech if user is redirected to correct website
-    await expect(page.locator(".login-title")).toContainText(header);
-
-    await firstNameLocator.type(firstName);
-    await lastNameLocator.type(lastName);
-    await userEmailLocator.type(mail);
-    await userMobileLocator.type(phone);
-    await passwordLocator.type(password);
-    await confirmPasswordLocator.type(password);
-
-    // mark more than 18 years old checkbox:
-    await page.locator("input[type='checkbox']").check()
-
-    await registerSecondLocator.click();
-
-    // check if success message appears successfully:
-    await expect(page.locator(".headcolor")).toContainText("Account Created Successfully");
-
-    await page.locator(".btn-primary").click()
 
     await userEmailLocator.type(mail);
     await passwordLocator.type(password);
@@ -58,7 +21,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     await expect(page).toHaveURL(mainPage + loginEndpoint);
 
     // click on login button
-    await page.locator("#login").click()
+    await loginLocator.click()
 
     // load until data are loaded (card titles from API):
     // "networkidle" - when all API calls are successfully completed:
@@ -87,48 +50,74 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
             }
         }
         
-        // check if no product is in Cart yet
-        await expect(numberOfItems).toHaveText('1');
+    // check if no product is in Cart yet
+    await expect(numberOfItems).toHaveText('1');
 
-        // go to cart page:
-        await cartButton.click();
+    // go to cart page:
+    await cartButton.click();
 
-        // wait for it loads (first list item):
-        await page.locator("div li").first().waitFor();
+    // wait for it loads (first list item):
+    await page.locator("div li").first().waitFor();
 
-        // check if currently selected product is located in cart:
+    // check if currently selected product is located in cart:
 
-        // this will find only for elements which has h3 tag:
-        const addedProduct = await page.locator("h3:has-text('"+productName+"')").isVisible();
-        expect(addedProduct).toBeTruthy();    
+    // this will find only for elements which has h3 tag:
+    const addedProduct = await page.locator("h3:has-text('"+productName+"')").isVisible();
+    expect(addedProduct).toBeTruthy();    
 
-        // click on checkout button to move to payment method
-        checkoutButton.click();
+    // click on checkout button to move to payment method
+    checkoutButton.click();
 
-        // select correct country (f.e. India):
-        // use slow typing to open dropdown:
-        await countrySelector.type("India", {delay:100});
-        const countryDropdownIndia = page.locator(".ta-results button:last-child");
+    // select correct country (f.e. India):
+    // use slow typing to open dropdown:
+    await countrySelector.type("India", {delay:100});
+    const countryDropdownIndia = page.locator(".ta-results button:last-child");
 
-        // wait for suggestions show up:
-        const dropdown = page.locator('.ta-results');
-        await dropdown.waitFor();
+    // wait for suggestions show up:
+    const dropdown = page.locator('.ta-results');
+    await dropdown.waitFor();
 
-        // Select India from these suggestions:      
-        await countryDropdownIndia.click();
+    // Select India from these suggestions:      
+    await countryDropdownIndia.click();
      
-        // check if mail is correctly inserted:
-        await expect(page.locator(".user__name label")).toHaveText(mail);
+    // check if mail is correctly inserted:
+    await expect(page.locator(".user__name label")).toHaveText(mail);
+    // click on submit button
+    await page.locator(".action__submit").click();
 
-        // click on submit button
-        await page.locator(".action__submit").click();
+    const thankYouMessage = page.locator(".hero-primary");
+    await expect(thankYouMessage).toHaveText(" Thankyou for the order. ");
 
-        const thankYouMessage = page.locator(".hero-primary");
-        await expect(thankYouMessage).toHaveText(" Thankyou for the order. ");
+    // extract orderId to use it for find order in order history page
+    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+    const orderIdSliced = orderId.slice(3, -3);
+    const historyEndpoint = "dashboard/myorders";
 
-        const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-        const orderIdSliced = orderId.slice(3, -3);
+    // click on order history page
+    await page.locator('text=Orders History Page').click();
 
-        await page.pause();
+    await expect(page).toHaveURL(mainPage + historyEndpoint);
+
+    await page.pause();
+
+    const tbRow = page.locator("tbody tr");
+    const rowCount = await tbRow.count();
+    console.log(rowCount);
+    
+    // click on correct order (actual one)
+    for (let i = 0; i < rowCount.length; i++) {
+        if (await tbRow.nth(i).locator("td").textContent() === orderIdSliced) 
+        {
+            await tbRow.nth(i).locator("td text=View").click();
+            break;
+        }
+    }
+
+    await page.pause();
+    // check if correct URL is displayed (for correct orderId)
+    // const orderDetailEndpoint = "dashboard/order-detail/" + orderId;
+    // await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
+
+
     }
 );
