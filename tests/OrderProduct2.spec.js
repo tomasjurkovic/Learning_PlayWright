@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test.only('RahulShetty eshop order product end to end test', async ({page}) => {
+test('RahulShetty eshop order product end to end test', async ({page}) => {
 
     const mail = "tomastest@test.org";
     const password = "Test1234";
