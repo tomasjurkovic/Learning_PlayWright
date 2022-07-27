@@ -118,6 +118,19 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     const orderDetailEndpoint = "dashboard/order-details/" + orderIdSliced;
     await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
 
+    // check if details are correct:
+    const orderIdDetails = await page.locator(".-main").textContent(); 
+    const emailDetails = await page.locator("div:nth-child(1) > div:nth-child(1) > p:nth-child(2)").textContent(); 
+    const productDetails = await page.locator(".title").textContent(); 
+    const countryDetails = await page.locator("div:nth-child(1) > div:nth-child(1) > p:nth-child(3)").textContent(); 
+    const priceDetails = await page.locator(".price").textContent(); 
+
+    // let's check all values:
+    expect(await orderIdDetails).toEqual(orderIdSliced);
+    expect(await emailDetails).toEqual(' ' + mail + ' ');
+    expect(await countryDetails).toEqual(" Country - India ");
+    expect(await productDetails).toEqual(' ' + productName + ' ');
+    expect(await priceDetails).toEqual(" $ 31500 ");
 
     }
 );
