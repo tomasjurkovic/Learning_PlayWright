@@ -99,7 +99,11 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     // check url
     await expect(page).toHaveURL(mainPage + historyEndpoint);
 
-    const tbRows = page.locator("tbody tr");
+    // usually it fails while table is fully loaded and wait for elements did not do its job
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    await delay(1000);
+
+    const tbRows = await page.locator("tbody tr");
     
     // click on correct order (actual one)
     for (let i = 1; i <= await tbRows.count(); i++) {
@@ -111,7 +115,7 @@ test.only('RahulShetty eshop order product end to end test', async ({page}) => {
     }
 
     // check if correct URL is displayed (for correct orderId)
-    const orderDetailEndpoint = "dashboard/order-detail/" + orderId;
+    const orderDetailEndpoint = "dashboard/order-details/" + orderIdSliced;
     await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
 
 
