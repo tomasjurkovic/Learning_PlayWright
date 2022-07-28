@@ -19,9 +19,14 @@ test.beforeAll( async() => {
     expect(loginResponse.ok()).toBeTruthy();
 
     // grab token from response
-    const loginResponseJson = loginResponse.json();
-    const token = loginResponseJson.token;
+    const loginResponseJson = await loginResponse.json();
+    const token = await loginResponseJson.token;
+    const statusCode = await loginResponse.status();
 
+    console.log(token);
+
+    // expect if status is 200
+    expect(statusCode).toEqual(200);
     }
 );
 
