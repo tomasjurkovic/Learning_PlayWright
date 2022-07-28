@@ -1,4 +1,29 @@
-const {test, expect} = require("@playwright/test");
+const {test, expect, request} = require("@playwright/test");
+
+const loginUrl = "https://www.rahulshettyacademy.com/api/ecom/auth/login";
+const userPayload = {userEmail:"tomastest@test.org",userPassword:"Test1234"};
+
+// Login automatically via API
+test.beforeAll( async() => {
+
+    // firstly start with new context using request
+    const apiContext = await request.newContext();
+
+    // call login POST with correct endpoint and payload
+    const loginResponse = await apiContext.post(loginUrl, {
+        data:userPayload
+        }
+    )
+
+    // check if successful status returned:
+    expect(loginResponse.ok()).toBeTruthy();
+
+    // grab token from response
+    const loginResponseJson = loginResponse.json();
+    const token = loginResponseJson.token;
+
+    }
+);
 
 test.only('RahulShetty eshop login with correct credentials test', async ({page}) => {
 
