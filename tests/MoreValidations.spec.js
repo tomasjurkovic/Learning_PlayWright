@@ -99,7 +99,7 @@ test('Hover validation test', async ({page}) => {
     }
 );
 
-test.only('Multiple frames validation test', async ({page}) => {
+test('Multiple frames validation test', async ({page}) => {
     // this is needed only when multiple frames are on page 
 
     // navigate to main page:
