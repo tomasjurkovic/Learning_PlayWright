@@ -3,13 +3,13 @@ const {test, expect, request} = require("@playwright/test");
 const loginUrl = "https://www.rahulshettyacademy.com/api/ecom/auth/login";
 const userPayload = {userEmail:"tomastest@test.org",userPassword:"Test1234"};
 let token;
+let orderID;
 const mainPage = "https://www.rahulshettyacademy.com/client/";
 const dashEndpoint = "dashboard/dash";
 const title = "Let's Shop";
 const orderUrl = "https://www.rahulshettyacademy.com/api/ecom/order/create-order";
 const contentType = "application/json";
 const orderPayload = {orders:[{country:"Cuba",productOrderedId:"6262e9d9e26b7e1a10e89c04"}]};
-const historyEndpoint = "dashboard/myorders";
 
 // Login automatically via API
 test.beforeAll( async() => {
@@ -58,7 +58,6 @@ test.only('Order via API test', async ({page}) => {
 
     // verify if order is created in history page:
     // precondition - created order (through API) -> check order history page
-    // here can be inserted javascript:
     page.addInitScript(value => {
         window.localStorage.setItem('token', value);
     }, token );
@@ -67,7 +66,7 @@ test.only('Order via API test', async ({page}) => {
     // authorization is made in header for this API
     const apiContext = await request.newContext();
 
-    // use post method with token autorization 
+    // use post method with token autorization s
     const orderResponse = await apiContext.post(orderUrl, {
         data: orderPayload,
         headers: 
@@ -81,8 +80,6 @@ test.only('Order via API test', async ({page}) => {
     // extract order id from response:
     const orderResponseJson = await orderResponse.json();
     orderID = await orderResponseJson.orders[0];
-
-    console.log(orderID);
 
     // expect if status is 201
     const statusCode = await orderResponse.status();
