@@ -54,7 +54,7 @@ test('Client app login test', async ({page}) => {
     }
 );
 
-test.only('Client app login test', async ({page}) => {
+test.only('Order via API test', async ({page}) => {
 
     // verify if order is created in history page:
     // precondition - created order (through API) -> check order history page
@@ -83,30 +83,31 @@ test.only('Client app login test', async ({page}) => {
     orderID = await orderResponseJson.orders[0];
 
     console.log(orderID);
-    
+
     // expect if status is 201
     const statusCode = await orderResponse.status();
     expect(statusCode).toEqual(201);
 
+    await page.goto(mainPage);
+
     // verify if order is located in history page:
-   // check url
+    await page.locator("button[routerlink*='myorders']").click();
 
-   page.goto(mainPage + historyEndpoint);
-
-   // usually it fails while table is fully loaded and wait for elements did not do its job
-   const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    // usually it fails while table is fully loaded and wait for elements did not do its job
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
        await delay(1000);
    
     const tbRows = await page.locator("tbody tr");
        
     // click on correct order (actual one)
        for (let i = 1; i <= await tbRows.count(); i++) {
-        if (await page.locator("tbody tr:nth-child("+i+") th").textContent() === orderIdSliced) 
+        if (await page.locator("tbody tr:nth-child("+i+") th").textContent() === orderID) 
         {
            await page.locator("tbody tr:nth-child("+i+") td .btn-primary").click();
                break;
        }
     }
+
     // check if correct URL is displayed (for correct orderId)
     const orderDetailEndpoint = "dashboard/order-details/" + orderID;
     await expect(page).toHaveURL(mainPage + orderDetailEndpoint);
@@ -124,7 +125,5 @@ test.only('Client app login test', async ({page}) => {
     expect(await countryDetails).toEqual(" Country - Cuba ");
     expect(await productDetails).toEqual(' iphone 13 pro ');
     expect(await priceDetails).toEqual(" $ 231500 ");
-
     }
-
 );
