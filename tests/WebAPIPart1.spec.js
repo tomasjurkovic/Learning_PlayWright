@@ -17,26 +17,13 @@ test.beforeAll( async() => {
     // firstly start with new context using request
     const apiContext = await request.newContext();
 
-    // call login POST with correct endpoint and payload
-    const loginResponse = await apiContext.post(loginUrl, {
-        data:userPayload
-        }
-    )
-
-    // check if successful status returned:
-    expect(loginResponse.ok()).toBeTruthy();
-
-    // grab token from response
-    const loginResponseJson = await loginResponse.json();
-    token = await loginResponseJson.token;
-    const statusCode = await loginResponse.status();
-
-    // expect if status is 200
-    expect(statusCode).toEqual(200);
+    
     }
 );
 
 test('Client app login test', async ({page}) => {
+
+    const apiUtils = new APIUtils(apiContext);
 
     // here can be inserted javascript:
     page.addInitScript(value => {

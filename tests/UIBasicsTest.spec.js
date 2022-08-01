@@ -105,7 +105,7 @@ test('RahulShetty login page correct register scenario - diff. page', async ({pa
         ]
     )
 
-    // check if correct user is logged in:
+    // check if correct user is logged in:.
     await expect(page.locator(".navbar-current-user")).toContainText(user);
 
     // check first card's title:
