@@ -1,34 +1,31 @@
 class APIUtils 
 {
 
-    constructor(apiContext, loginPayload) 
+    constructor(apiContext, userPayload) 
     {
         this.apiContext = apiContext;
-        this.loginPayload = loginPayload;
+        this.userPayload = userPayload;
+        this.orderPayload = orderPayload;
+
     }
 
     async getToken() 
     {
         // call login POST with correct endpoint and payload
-        const loginResponse = await apiContext.post(loginUrl, {
+        const loginResponse = await this.apiContext.post(loginUrl, {
             data:this.userPayload
             }
         )
 
-        // check if successful status returned:
-        expect(loginResponse.ok()).toBeTruthy();
-
         // grab token from response
         const loginResponseJson = await loginResponse.json();
         token = await loginResponseJson.token;
-        const statusCode = await loginResponse.status();
-
         return token;
     }
 
     async createOrder(orderPayload) 
     {
-        const orderResponse = await apiContext.post(orderUrl, {
+        const orderResponse = await this.apiContext.post(orderUrl, {
             data: orderPayload,
             headers: 
                 {
@@ -42,10 +39,10 @@ class APIUtils
         const orderResponseJson = await orderResponse.json();
         orderID = await orderResponseJson.orders[0];
 
-        // expect if status is 201
-        const statusCode = await orderResponse.status();
-
         return orderID;
 
     }
 }
+
+// this makes visible these methods to all files:
+module.exports = {APIUtils};

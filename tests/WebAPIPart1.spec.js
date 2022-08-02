@@ -1,7 +1,9 @@
 const {test, expect, request} = require("@playwright/test");
+const {APIUtils} = require('./utils/APIUtils');
+const orderPayload = {orders:[{country:"Cuba",productOrderedId:"6262e9d9e26b7e1a10e89c04"}]};
+const userPayload = {userEmail:"tomastest@test.org",userPassword:"Test1234"};
 
 const loginUrl = "https://www.rahulshettyacademy.com/api/ecom/auth/login";
-const userPayload = {userEmail:"tomastest@test.org",userPassword:"Test1234"};
 let token;
 let orderID;
 const mainPage = "https://www.rahulshettyacademy.com/client/";
@@ -9,21 +11,22 @@ const dashEndpoint = "dashboard/dash";
 const title = "Let's Shop";
 const orderUrl = "https://www.rahulshettyacademy.com/api/ecom/order/create-order";
 const contentType = "application/json";
-const orderPayload = {orders:[{country:"Cuba",productOrderedId:"6262e9d9e26b7e1a10e89c04"}]};
+
 
 // Login automatically via API
 test.beforeAll( async() => {
 
     // firstly start with new context using request
     const apiContext = await request.newContext();
-
+    const apiUtils = new APIUtils(apiContext, userPayload);
+    apiUtils.createOrder(orderPayload);
     
     }
 );
 
 test('Client app login test', async ({page}) => {
 
-    const apiUtils = new APIUtils(apiContext);
+    const apiUtils = new APIUtils(apiContext. userPayload);
 
     // here can be inserted javascript:
     page.addInitScript(value => {
@@ -43,15 +46,16 @@ test('Client app login test', async ({page}) => {
 
 test.only('Order via API test', async ({page}) => {
 
+    // create order via API:
+    // authorization is made in header for this API
+    const apiUtils = new APIUtils(apiContext, userPayload);
+    const orderId = createOrder(orderPayload);
+
     // verify if order is created in history page:
     // precondition - created order (through API) -> check order history page
     page.addInitScript(value => {
         window.localStorage.setItem('token', value);
     }, token );
-
-    // create order via API:
-    // authorization is made in header for this API
-    const apiContext = await request.newContext();
 
     // use post method with token autorization s
     const orderResponse = await apiContext.post(orderUrl, {
